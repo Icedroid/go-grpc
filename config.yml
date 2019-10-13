@@ -1,0 +1,14 @@
+log:
+  # 设置日志级别 [DEBUG, INFO, WARN, ERROR, FATAL, CRITICAL]
+  level: DEBUG
+  # 设置日志存放目录
+  #dir: logs
+# mysql
+db:
+  mysql: "axe:eecDn2@!9@tcp(192.168.0.49:9036)/axe_playbook?timeout=5s&readTimeout=5s&writeTimeout=5s&parseTime=true&loc=Local&charset=utf8,utf8mb4"
+
+
+
+
+
+

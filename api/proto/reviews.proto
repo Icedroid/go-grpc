@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package proto;
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+import "protoc-gen-swagger/options/annotations.proto";
+
+option go_package = "proto";
+
+service Reviews {
+    rpc Query (QueryReviewsRequest) returns (QueryReviewsResponse){
+        option (google.api.http) = {
+            get: "/v1/reivews/query"
+        };
+    };
+}
+
+message QueryReviewsRequest {
+    uint64 productID = 1;
+}
+
+message Review {
+    uint64 id = 1;
+    uint64 productID = 2;
+    string message = 3;
+    google.protobuf.Timestamp createdTime = 4;
+}
+
+message QueryReviewsResponse {
+    repeated Review reviews = 1;
+}

@@ -1,0 +1,76 @@
+{
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "title": "reviews.proto",
+    "version": "version not set"
+  },
+  "paths": {
+    "/v1/reivews/query": {
+      "get": {
+        "tags": [
+          "Reviews"
+        ],
+        "operationId": "Query",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "uint64",
+            "name": "productID",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protoQueryReviewsResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "protoQueryReviewsResponse": {
+      "type": "object",
+      "properties": {
+        "reviews": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protoReview"
+          }
+        }
+      }
+    },
+    "protoReview": {
+      "type": "object",
+      "properties": {
+        "createdTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "message": {
+          "type": "string"
+        },
+        "productID": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    }
+  }
+}
