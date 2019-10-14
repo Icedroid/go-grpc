@@ -3,16 +3,15 @@ package grpc
 import (
 	"context"
 	"fmt"
-	"github.com/grpc-ecosystem/go-grpc-middleware"
-	"github.com/grpc-ecosystem/go-grpc-prometheus"
+	"time"
+
+	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
+	grpc_prometheus "github.com/grpc-ecosystem/go-grpc-prometheus"
 	"github.com/grpc-ecosystem/grpc-opentracing/go/otgrpc"
-	_ "github.com/mbobakov/grpc-consul-resolver" // It's important
 	"github.com/opentracing/opentracing-go"
 	"github.com/pkg/errors"
-	"github.com/Icedroid/go-grpc/pkg/consul"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
-	"time"
 )
 
 type ClientOptions struct {
@@ -66,14 +65,12 @@ func WithGrpcDialOptions(options ...grpc.DialOption) ClientOptional {
 }
 
 type Client struct {
-	consulOptions *consul.Options
-	o             *ClientOptions
+	o *ClientOptions
 }
 
-func NewClient(consulOptions *consul.Options, o *ClientOptions) (*Client, error) {
+func NewClient(o *ClientOptions) (*Client, error) {
 	return &Client{
-		consulOptions: consulOptions,
-		o:             o,
+		o: o,
 	}, nil
 }
 
@@ -90,9 +87,11 @@ func (c *Client) Dial(service string, options ...ClientOptional) (*grpc.ClientCo
 		option(o)
 	}
 
-	target := fmt.Sprintf("consul://%s/%s?wait=%s&tag=%s", c.consulOptions.Addr, service, o.Wait, o.Tag)
-
-	conn, err := grpc.DialContext(ctx, target, o.GrpcDialOptions...)
+	// target := fmt.Sprintf("consul://%s/%s?wait=%s&tag=%s", c.consulOptions.Addr, service, o.Wait, o.Tag)
+	if service == "" {
+		service = fmt.Sprintf(":%d", defaultPort)
+	}
+	conn, err := grpc.DialContext(ctx, service, o.GrpcDialOptions...)
 	if err != nil {
 		return nil, errors.Wrap(err, "grpc dial error")
 	}

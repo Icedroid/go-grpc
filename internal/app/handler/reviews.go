@@ -1,20 +1,22 @@
-package grpcservers
+package handler
 
 import (
 	"context"
+
+	"github.com/Icedroid/go-grpc/api/proto"
+	services2 "github.com/Icedroid/go-grpc/internal/app/services"
+
 	"github.com/golang/protobuf/ptypes"
 	"github.com/pkg/errors"
-	"github.com/Icedroid/go-grpc/api/proto"
-	"github.com/Icedroid/go-grpc/app/reviews/services"
 	"go.uber.org/zap"
 )
 
 type ReviewsServer struct {
 	logger  *zap.Logger
-	service services.ReviewsService
+	service services2.ReviewsService
 }
 
-func NewReviewsServer(logger *zap.Logger, ps services.ReviewsService) (*ReviewsServer, error) {
+func NewReviewsServer(logger *zap.Logger, ps services2.ReviewsService) (*ReviewsServer, error) {
 	return &ReviewsServer{
 		logger:  logger,
 		service: ps,

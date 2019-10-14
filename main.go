@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-
 )
 
 var appName = flag.String("appName", "go-grpc", "set app name.")

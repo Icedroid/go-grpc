@@ -3,8 +3,9 @@ package repositories
 import (
 	"github.com/jinzhu/gorm"
 	"github.com/pkg/errors"
-	"github.com/Icedroid/go-grpc/pkg/models"
 	"go.uber.org/zap"
+
+	"github.com/Icedroid/go-grpc/internal/pkg/models"
 )
 
 type ReviewsRepository interface {

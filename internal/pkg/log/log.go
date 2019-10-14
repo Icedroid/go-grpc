@@ -1,12 +1,13 @@
 package log
 
 import (
+	"os"
+
 	"github.com/google/wire"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
-	"os"
 )
 
 // Options is log configuration struct
@@ -44,22 +45,23 @@ func New(o *Options) (*zap.Logger, error) {
 		return nil, err
 	}
 
-	fw := zapcore.AddSync(&lumberjack.Logger{
-		Filename:   o.Filename,
-		MaxSize:    o.MaxSize, // megabytes
-		MaxBackups: o.MaxBackups,
-		MaxAge:     o.MaxAge, // days
-	})
-
-	cw := zapcore.Lock(os.Stdout)
-
 	// file core 采用jsonEncoder
 	cores := make([]zapcore.Core, 0, 2)
-	je := zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig())
-	cores = append(cores, zapcore.NewCore(je, fw, level))
+
+	if o.Filename != "" {
+		fw := zapcore.AddSync(&lumberjack.Logger{
+			Filename:   o.Filename,
+			MaxSize:    o.MaxSize, // megabytes
+			MaxBackups: o.MaxBackups,
+			MaxAge:     o.MaxAge, // days
+		})
+		je := zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig())
+		cores = append(cores, zapcore.NewCore(je, fw, level))
+	}
 
 	// stdout core 采用 ConsoleEncoder
 	if o.Stdout {
+		cw := zapcore.Lock(os.Stdout)
 		ce := zapcore.NewConsoleEncoder(zap.NewDevelopmentEncoderConfig())
 		cores = append(cores, zapcore.NewCore(ce, cw, level))
 	}

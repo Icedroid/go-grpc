@@ -1,8 +1,12 @@
-package http
+package httpgin
 
 import (
 	"context"
 	"fmt"
+	"net/http"
+	"time"
+
+	"github.com/Icedroid/go-grpc/internal/pkg/transports/http/middlewares/prom"
 	"github.com/gin-contrib/pprof"
 	"github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
@@ -12,12 +16,10 @@ import (
 	"github.com/opentracing/opentracing-go"
 	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"github.com/Icedroid/go-grpc/pkg/transports/http/middlewares/ginprom"
-	"github.com/Icedroid/go-grpc/pkg/utils/netutil"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
-	"net/http"
-	"time"
+
+	netutil2 "github.com/Icedroid/go-grpc/internal/pkg/utils/netutil"
 )
 
 type Options struct {
@@ -60,7 +62,7 @@ func NewRouter(o *Options, logger *zap.Logger, init InitControllers, tracer open
 	r.Use(gin.Recovery()) // panic之后自动恢复
 	r.Use(ginzap.Ginzap(logger, time.RFC3339, true))
 	r.Use(ginzap.RecoveryWithZap(logger, true))
-	r.Use(ginprom.New(r).Middleware()) // 添加prometheus 监控
+	r.Use(prom.New(r).Middleware()) // 添加prometheus 监控
 	r.Use(ginhttp.Middleware(tracer))
 
 	r.GET("/metrics", gin.WrapH(promhttp.Handler()))
@@ -89,10 +91,10 @@ func (s *Server) Application(name string) {
 func (s *Server) Start() error {
 	s.port = s.o.Port
 	if s.port == 0 {
-		s.port = netutil.GetAvailablePort()
+		s.port = netutil2.GetAvailablePort()
 	}
 
-	s.host = netutil.GetLocalIP4()
+	s.host = netutil2.GetLocalIP4()
 
 	if s.host == "" {
 		return errors.New("get local ipv4 error")

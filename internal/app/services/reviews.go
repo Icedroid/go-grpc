@@ -2,9 +2,10 @@ package services
 
 import (
 	"github.com/pkg/errors"
-	"github.com/Icedroid/go-grpc/app/reviews/repositories"
-	"github.com/Icedroid/go-grpc/pkg/models"
 	"go.uber.org/zap"
+
+	"github.com/Icedroid/go-grpc/internal/app/repositories"
+	"github.com/Icedroid/go-grpc/internal/pkg/models"
 )
 
 type ReviewsService interface {
