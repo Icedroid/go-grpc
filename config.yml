@@ -6,7 +6,7 @@ log:
   level: "debug"
   stdout: true
 db:
-  url: "axe:eecDn2@!9@tcp(192.168.0.49:9036)/ecf?timeout=5s&readTimeout=5s&writeTimeout=5s&parseTime=true&loc=Local&charset=utf8,utf8mb4"
+  url: "root:123456@tcp(192.168.56.10:23000)/test?timeout=5s&readTimeout=5s&writeTimeout=5s&parseTime=true&loc=Local&charset=utf8,utf8mb4"
   debug : false
 http:
   port: 8082
@@ -15,7 +15,8 @@ grpc:
 jaeger:
   serviceName: go-grpc
   reporter:
-    localAgentHostPort: "jaeger-agent:6831"
+#    localAgentHostPort: "jaeger-agent:6831"
+    localAgentHostPort: "192.168.56.10:30922"
   sampler:
     type: const
     param: 1
