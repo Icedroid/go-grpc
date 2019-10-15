@@ -1,11 +1,11 @@
-package handler
+package grpcserver
 
 import (
 	"github.com/google/wire"
 	"google.golang.org/grpc"
 
 	"github.com/Icedroid/go-grpc/api/proto"
-	transportgrpc "github.com/Icedroid/go-grpc/internal/pkg/transports/grpc"
+	transportgrpc "github.com/Icedroid/go-grpc/internal/pkg/transport/grpc"
 )
 
 func CreateInitServersFn(
@@ -16,4 +16,4 @@ func CreateInitServersFn(
 	}
 }
 
-var ProviderSet = wire.NewSet(NewReviewsServer)
+var ProviderSet = wire.NewSet(NewReviewsServer, CreateInitServersFn)

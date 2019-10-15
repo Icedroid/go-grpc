@@ -9,20 +9,20 @@ import (
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 
-	grpc2 "github.com/Icedroid/go-grpc/internal/pkg/transports/grpc"
-	http2 "github.com/Icedroid/go-grpc/internal/pkg/transports/http"
+	"github.com/Icedroid/go-grpc/internal/pkg/transport/grpc"
+	"github.com/Icedroid/go-grpc/internal/pkg/transport/http"
 )
 
 type Application struct {
 	name       string
 	logger     *zap.Logger
-	httpServer *http2.Server
-	grpcServer *grpc2.Server
+	httpServer *http.Server
+	grpcServer *grpc.Server
 }
 
 type Option func(app *Application) error
 
-func HttpServerOption(svr *http2.Server) Option {
+func HttpServerOption(svr *http.Server) Option {
 	return func(app *Application) error {
 		svr.Application(app.name)
 		app.httpServer = svr
@@ -31,7 +31,7 @@ func HttpServerOption(svr *http2.Server) Option {
 	}
 }
 
-func GrpcServerOption(svr *grpc2.Server) Option {
+func GrpcServerOption(svr *grpc.Server) Option {
 	return func(app *Application) error {
 		svr.Application(app.name)
 		app.grpcServer = svr

@@ -18,11 +18,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	netutil2 "github.com/Icedroid/go-grpc/internal/pkg/utils/netutil"
-)
-
-const (
-	defaultPort = 8081
+	"github.com/Icedroid/go-grpc/internal/pkg/utils/netutil"
 )
 
 type ServerOptions struct {
@@ -94,11 +90,10 @@ func (s *Server) Application(name string) {
 func (s *Server) Start() error {
 	s.port = s.o.Port
 	if s.port == 0 {
-		// s.port = netutil.GetAvailablePort()
-		s.port = defaultPort
+		s.port = netutil.GetAvailablePort()
 	}
 
-	s.host = netutil2.GetLocalIP4()
+	s.host = netutil.GetLocalIP4()
 
 	if s.host == "" {
 		return errors.New("get local ipv4 error")

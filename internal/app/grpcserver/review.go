@@ -1,10 +1,10 @@
-package handler
+package grpcserver
 
 import (
 	"context"
 
 	"github.com/Icedroid/go-grpc/api/proto"
-	services2 "github.com/Icedroid/go-grpc/internal/app/services"
+	"github.com/Icedroid/go-grpc/internal/app/service"
 
 	"github.com/golang/protobuf/ptypes"
 	"github.com/pkg/errors"
@@ -13,10 +13,10 @@ import (
 
 type ReviewsServer struct {
 	logger  *zap.Logger
-	service services2.ReviewsService
+	service service.ReviewsService
 }
 
-func NewReviewsServer(logger *zap.Logger, ps services2.ReviewsService) (*ReviewsServer, error) {
+func NewReviewsServer(logger *zap.Logger, ps service.ReviewsService) (*ReviewsServer, error) {
 	return &ReviewsServer{
 		logger:  logger,
 		service: ps,

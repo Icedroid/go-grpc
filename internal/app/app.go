@@ -3,32 +3,15 @@ package app
 import (
 	"github.com/google/wire"
 	"github.com/pkg/errors"
-	"github.com/spf13/viper"
 	"go.uber.org/zap"
 
 	"github.com/Icedroid/go-grpc/internal/pkg/app"
-	"github.com/Icedroid/go-grpc/internal/pkg/transports/grpc"
-	"github.com/Icedroid/go-grpc/internal/pkg/transports/http"
+	"github.com/Icedroid/go-grpc/internal/pkg/transport/grpc"
+	"github.com/Icedroid/go-grpc/internal/pkg/transport/http"
 )
 
-type Options struct {
-	Name string
-}
-
-func NewOptions(v *viper.Viper, logger *zap.Logger) (*Options, error) {
-	var err error
-	o := new(Options)
-	if err = v.UnmarshalKey("app", o); err != nil {
-		return nil, errors.Wrap(err, "unmarshal app option error")
-	}
-
-	logger.Info("load application options success")
-
-	return o, err
-}
-
-func NewApp(o *Options, logger *zap.Logger, hs *http.Server, gs *grpc.Server) (*app.Application, error) {
-	a, err := app.New(o.Name, logger, app.GrpcServerOption(gs), app.HttpServerOption(hs))
+func NewApp(appName string, logger *zap.Logger, hs *http.Server, gs *grpc.Server) (*app.Application, error) {
+	a, err := app.New(appName, logger, app.GrpcServerOption(gs), app.HttpServerOption(hs))
 
 	if err != nil {
 		return nil, errors.Wrap(err, "new app error")
@@ -37,4 +20,4 @@ func NewApp(o *Options, logger *zap.Logger, hs *http.Server, gs *grpc.Server) (*
 	return a, nil
 }
 
-var ProviderSet = wire.NewSet(NewApp, NewOptions)
+var ProviderSet = wire.NewSet(NewApp)

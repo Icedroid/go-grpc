@@ -1,4 +1,4 @@
-package grpcclients
+package grpcclient
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 
 	"github.com/Icedroid/go-grpc/api/proto"
-	transporthttp "github.com/Icedroid/go-grpc/internal/pkg/transports/http"
+	transporthttp "github.com/Icedroid/go-grpc/internal/pkg/transport/http"
 )
 
 func CreateInitHttpRoutersFn(

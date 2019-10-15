@@ -10,16 +10,11 @@ import (
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 
-	netutil2 "github.com/Icedroid/go-grpc/internal/pkg/utils/netutil"
-)
-
-const (
-	defaultPort = 8082
+	"github.com/Icedroid/go-grpc/internal/pkg/utils/netutil"
 )
 
 type Options struct {
 	Port int
-	Mode string
 }
 
 type Server struct {
@@ -73,11 +68,10 @@ func (s *Server) Application(name string) {
 func (s *Server) Start() error {
 	s.port = s.o.Port
 	if s.port == 0 {
-		// s.port = netutil.GetAvailablePort()
-		s.port = defaultPort
+		s.port = netutil.GetAvailablePort()
 	}
 
-	s.host = netutil2.GetLocalIP4()
+	s.host = netutil.GetLocalIP4()
 	if s.host == "" {
 		return errors.New("get local ipv4 error")
 	}

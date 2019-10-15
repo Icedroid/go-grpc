@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 
-	models2 "github.com/Icedroid/go-grpc/internal/pkg/models"
+	"github.com/Icedroid/go-grpc/internal/pkg/model"
 )
 
 // Options is  configuration of database
@@ -41,7 +41,7 @@ func New(o *Options) (*gorm.DB, error) {
 		db = db.Debug()
 	}
 
-	db.AutoMigrate(&models2.Review{})
+	db.AutoMigrate(&model.Review{})
 
 	return db, nil
 }

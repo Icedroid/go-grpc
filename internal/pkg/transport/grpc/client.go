@@ -2,7 +2,6 @@ package grpc
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
@@ -88,9 +87,6 @@ func (c *Client) Dial(service string, options ...ClientOptional) (*grpc.ClientCo
 	}
 
 	// target := fmt.Sprintf("consul://%s/%s?wait=%s&tag=%s", c.consulOptions.Addr, service, o.Wait, o.Tag)
-	if service == "" {
-		service = fmt.Sprintf(":%d", defaultPort)
-	}
 	conn, err := grpc.DialContext(ctx, service, o.GrpcDialOptions...)
 	if err != nil {
 		return nil, errors.Wrap(err, "grpc dial error")

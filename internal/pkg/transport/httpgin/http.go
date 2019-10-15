@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Icedroid/go-grpc/internal/pkg/transports/http/middlewares/prom"
+	"github.com/Icedroid/go-grpc/internal/pkg/transport/httpgin/middlewares/ginprom"
 	"github.com/gin-contrib/pprof"
-	"github.com/gin-contrib/zap"
+	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 	consulApi "github.com/hashicorp/consul/api"
@@ -62,7 +62,7 @@ func NewRouter(o *Options, logger *zap.Logger, init InitControllers, tracer open
 	r.Use(gin.Recovery()) // panic之后自动恢复
 	r.Use(ginzap.Ginzap(logger, time.RFC3339, true))
 	r.Use(ginzap.RecoveryWithZap(logger, true))
-	r.Use(prom.New(r).Middleware()) // 添加prometheus 监控
+	r.Use(ginprom.New(r).Middleware()) // 添加prometheus 监控
 	r.Use(ginhttp.Middleware(tracer))
 
 	r.GET("/metrics", gin.WrapH(promhttp.Handler()))
